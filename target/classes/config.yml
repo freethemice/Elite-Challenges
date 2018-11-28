@@ -1,0 +1,350 @@
+messages:
+  time-message: "&a&lThere is &c&l%time% &a&luntil this challenge ends!"
+  challenges-reset-message: "&a&lThe challenges have been reset, there are now new challenges!"
+  challenge-finished-broadcast:
+  - '&a&l&nThe Challenges Have Successfully Been Finished!'
+  - ' '
+  - '&a&lEnding Statistics for Challenge %challenge-0%:'
+  - '&c&l(!) &a&l%player-0:1% has came first in %challenge-0% with %counter-0:1% &c&l(!)'
+  - '&c&l(!) &a&l%player-0:2% has came second in %challenge-0% with %counter-0:2% &c&l(!)'
+  - '&c&l(!) &a&l%player-0:3% has came third in %challenge-0% with %counter-0:3% &c&l(!)'
+  - ' '
+  - '&a&lEnding Statistics for Challenge %challenge-1%:'
+  - '&c&l(!) &a&l%player-1:1% has came first in %challenge-1% with %counter-1:1% &c&l(!)'
+  - '&c&l(!) &a&l%player-1:2% has came second in %challenge-1% with %counter-1:2% &c&l(!)'
+  - '&c&l(!) &a&l%player-1:3% has came third in %challenge-1% with %counter-1:3% &c&l(!)'
+  - ' '
+  - '&a&lEnding Statistics for Challenge %challenge-2%:'
+  - '&c&l(!) &a&l%player-2:1% has came first in %challenge-2% with %counter-2:1% &c&l(!)'
+  - '&c&l(!) &a&l%player-2:2% has came second in %challenge-2% with %counter-2:2% &c&l(!)'
+  - '&c&l(!) &a&l%player-2:3% has came third in %challenge-2% with %counter-2:3% &c&l(!)'
+  - ' '
+  - '&a&lEnding Statistics for Challenge %challenge-3%:'
+  - '&c&l(!) &a&l%player-3:1% has came first in %challenge-3% with %counter-3:1% &c&l(!)'
+  - '&c&l(!) &a&l%player-3:2% has came second in %challenge-3% with %counter-3:2% &c&l(!)'
+  - '&c&l(!) &a&l%player-3:3% has came third in %challenge-3% with %counter-3:3% &c&l(!)'
+  - ' '
+  - '&a&lEnding Statistics for Challenge %challenge-4%:'
+  - '&c&l(!) &a&l%player-4:1% has came first in %challenge-4% with %counter-4:1% &c&l(!)'
+  - '&c&l(!) &a&l%player-4:2% has came second in %challenge-4% with %counter-4:2% &c&l(!)'
+  - '&c&l(!) &a&l%player-4:3% has came third in %challenge-4% with %counter-4:3% &c&l(!)'
+  - ' '
+  - '&a&l5 new &c&lChallenges &a&lhave begun and all players have been rewarded so good luck!'
+per-world:
+  is-enabled: false
+  worlds:
+  - 'world'
+  - 'world_nether'
+  - 'world_the_end'
+challenges:
+  block-break:
+    type: "BLOCK_BREAK"
+    object-types:
+    - 'SAND'
+    - 'DIRT'
+    - 'GRASS'
+    - 'GRAVEL'
+    icon:
+      material: "DIAMOND_SPADE"
+      amount: 1
+      data: -1
+      name: "&a&lMost Blocks Dug"
+      lore:
+      - '&7%date%'
+      - '&7ends in ... &a%time%'
+      - '&2&l1. &7[%faction1%&7] &a%player1% &7- %counter1%'
+      - '&2&l2. &7[%faction2%&7] &a%player2% &7- %counter2%'
+      - '&2&l3. &7[%faction3%&7] &a%player3% &7- %counter3%'
+      - ' '
+      - '&7------------------------'
+      - ' '
+      - '&a&lStats of %player%'
+      - ' '
+      - '&e&lBlocks Dug'
+      - ' &7%counter%'
+      - ' '
+      - '&e&lRanking'
+      - ' &7%rank%'
+  block-place:
+    type: "BLOCK_PLACE"
+    object-types:
+    - 'OBSIDIAN'
+    icon:
+      material: "OBSIDIAN"
+      amount: 1
+      data: -1
+      name: "&a&lMost Obsidian Placed"
+      lore:
+      - '&7%date%'
+      - '&7ends in ... &a%time%'
+      - '&2&l1. &7[%faction1%&7] &a%player1% &7- %counter1%'
+      - '&2&l2. &7[%faction2%&7] &a%player2% &7- %counter2%'
+      - '&2&l3. &7[%faction3%&7] &a%player3% &7- %counter3%'
+      - ' '
+      - '&7------------------------'
+      - ' '
+      - '&a&lStats of %player%'
+      - ' '
+      - '&e&lObsidian Placed'
+      - ' &7%counter%'
+      - ' '
+      - '&e&lRanking'
+      - ' &7%rank%'
+  furnace-smelt:
+    type: "FURNACE_SMELT"
+    object-types:
+    - 'IRON_INGOT'
+    - 'GOLD_INGOT'
+    icon:
+      material: "IRON_INGOT"
+      amount: 1
+      data: -1
+      name: "&a&lMost Ingots Smelted"
+      lore:
+      - '&7%date%'
+      - '&7ends in ... &a%time%'
+      - '&2&l1. &7[%faction1%&7] &a%player1% &7- %counter1%'
+      - '&2&l2. &7[%faction2%&7] &a%player2% &7- %counter2%'
+      - '&2&l3. &7[%faction3%&7] &a%player3% &7- %counter3%'
+      - ' '
+      - '&7------------------------'
+      - ' '
+      - '&a&lStats of %player%'
+      - ' '
+      - '&e&lIngots Smelted'
+      - ' &7%counter%'
+      - ' '
+      - '&e&lRanking'
+      - ' &7%rank%'
+  entity-death:
+    type: "ENTITY_DEATH"
+    object-types:
+    - 'PLAYER'
+    - 'ZOMBIE'
+    - 'PIG_ZOMBIE'
+    icon:
+      material: "SKULL_ITEM"
+      amount: 1
+      data: -1
+      name: "&a&lMost Humanoid Creatures Slain"
+      lore:
+      - '&7%date%'
+      - '&7ends in ... &a%time%'
+      - '&2&l1. &7[%faction1%&7] &a%player1% &7- %counter1%'
+      - '&2&l2. &7[%faction2%&7] &a%player2% &7- %counter2%'
+      - '&2&l3. &7[%faction3%&7] &a%player3% &7- %counter3%'
+      - ' '
+      - '&7------------------------'
+      - ' '
+      - '&a&lStats of %player%'
+      - ' '
+      - '&e&lHumanoids Slain'
+      - ' &7%counter%'
+      - ' '
+      - '&e&lRanking'
+      - ' &7%rank%'
+  ptime:
+    type: "PTIME"
+    object-types:
+    - 'PLAYER'
+    icon:
+      material: "WATCH"
+      amount: 1
+      data: -1
+      name: "&a&lMost Time Played in Seconds"
+      lore:
+      - '&7%date%'
+      - '&7ends in ... &a%time%'
+      - '&2&l1. &7[%faction1%&7] &a%player1% &7- %counter1%'
+      - '&2&l2. &7[%faction2%&7] &a%player2% &7- %counter2%'
+      - '&2&l3. &7[%faction3%&7] &a%player3% &7- %counter3%'
+      - ' '
+      - '&7------------------------'
+      - ' '
+      - '&a&lStats of %player%'
+      - ' '
+      - '&e&lTime Played in Seconds'
+      - ' &7%counter%'
+      - ' '
+      - '&e&lRanking'
+      - ' &7%rank%'
+  fishing:
+    type: "FISHING"
+    object-types:
+    - 'RAW_FISH'
+    icon:
+      material: "RAW_FISH"
+      amount: 1
+      data: -1
+      name: "&a&lMost Fish Caught"
+      lore:
+      - '&7%date%'
+      - '&7ends in ... &a%time%'
+      - '&2&l1. &7[%faction1%&7] &a%player1% &7- %counter1%'
+      - '&2&l2. &7[%faction2%&7] &a%player2% &7- %counter2%'
+      - '&2&l3. &7[%faction3%&7] &a%player3% &7- %counter3%'
+      - ' '
+      - '&7------------------------'
+      - ' '
+      - '&a&lStats of %player%'
+      - ' '
+      - '&e&lFish Caught'
+      - ' &7%counter%'
+      - ' '
+      - '&e&lRanking'
+      - ' &7%rank%'
+  warzone-time:
+    type: "WARZONE_TIME"
+    object-types:
+    - 'PLAYER'
+    icon:
+      material: "WATCH"
+      amount: 1
+      data: -1
+      name: "&a&lMost Seconds Spent In Warzone"
+      lore:
+      - '&7%date%'
+      - '&7ends in ... &a%time%'
+      - '&2&l1. &7[%faction1%&7] &a%player1% &7- %counter1%'
+      - '&2&l2. &7[%faction2%&7] &a%player2% &7- %counter2%'
+      - '&2&l3. &7[%faction3%&7] &a%player3% &7- %counter3%'
+      - ' '
+      - '&7------------------------'
+      - ' '
+      - '&a&lStats of %player%'
+      - ' '
+      - '&e&lSeconds Spent In Warzone'
+      - ' &7%counter%'
+      - ' '
+      - '&e&lRanking'
+      - ' &7%rank%'
+  craft-item:
+    type: "CRAFT_ITEM"
+    object-types:
+    - 'STICK'
+    icon:
+      material: "STICK"
+      amount: 1
+      data: -1
+      name: "&a&lMost Sticks Crafted"
+      lore:
+      - '&7%date%'
+      - '&7ends in ... &a%time%'
+      - '&2&l1. &7[%faction1%&7] &a%player1% &7- %counter1%'
+      - '&2&l2. &7[%faction2%&7] &a%player2% &7- %counter2%'
+      - '&2&l3. &7[%faction3%&7] &a%player3% &7- %counter3%'
+      - ' '
+      - '&7------------------------'
+      - ' '
+      - '&a&lStats of %player%'
+      - ' '
+      - '&e&lSticks Crafted'
+      - ' &7%counter%'
+      - ' '
+      - '&e&lRanking'
+      - ' &7%rank%'
+  player-interact:
+    type: "PLAYER_INTERACT"
+    object-types:
+    - '&e&lEnchant Book'
+    icon:
+      material: "ENCHANTED_BOOK"
+      amount: 1
+      data: -1
+      name: "&a&lMost Enchant Books Opened"
+      lore:
+      - '&7%date%'
+      - '&7ends in ... &a%time%'
+      - '&2&l1. &7[%faction1%&7] &a%player1% &7- %counter1%'
+      - '&2&l2. &7[%faction2%&7] &a%player2% &7- %counter2%'
+      - '&2&l3. &7[%faction3%&7] &a%player3% &7- %counter3%'
+      - ' '
+      - '&7------------------------'
+      - ' '
+      - '&a&lStats of %player%'
+      - ' '
+      - '&e&lBooks Opened'
+      - ' &7%counter%'
+      - ' '
+      - '&e&lRanking'
+      - ' &7%rank%'
+gui:
+  name: "&7Challenges"
+  size: 27
+  icons:
+    0:
+      material: "EMERALD"
+      amount: 1
+      data: -1
+      name: "&a&l&n1st &aPlace Prize"
+      lore:
+      - '&c&l* &dSword of Power'
+      - '&c&l* &e15000 exp'
+    9:
+      material: "DIAMOND"
+      amount: 1
+      data: -1
+      name: "&a&l&n2nd &aPlace Prize"
+      lore:
+      - '&c&l* &dSword of Power'
+      - '&c&l* &e15000 exp'
+    18:
+      material: "IRON_INGOT"
+      amount: 1
+      data: -1
+      name: "&a&l&n3rd &aPlace Prize"
+      lore:
+      - '&c&l* &dSword of Power'
+      - '&c&l* &e15000 exp'
+stats-gui-format:
+  size: 54
+  name: "&7Challenge Stats"
+  skull-name: "&a&l%rank%. &e&l%player%"
+  skull-lore:
+  - ' '
+  - '&e&lPlayer: %player%'
+  - ' '
+  - '&e&lRank: %rank%'
+rewards:
+  1:
+    0:
+      material: "DIAMOND_SWORD"
+      amount: 1
+      data: -1
+      name: "&dSword of Power"
+      lore:
+      - '&7Powerful sword!'
+      enchantments:
+      - 'DAMAGE_ALL:5'
+      - 'DURABILITY:3'
+    1:
+      commands:
+      - 'exp give %player% 15000'
+  2:
+    0:
+      material: "DIAMOND_SWORD"
+      amount: 1
+      data: -1
+      name: "&dSword of Power"
+      lore:
+      - '&7Powerful sword!'
+      enchantments:
+      - 'DAMAGE_ALL:5'
+      - 'DURABILITY:3'
+    1:
+      commands:
+      - 'exp give %player% 15000'
+  3:
+    0:
+      material: "DIAMOND_SWORD"
+      amount: 1
+      data: -1
+      name: "&dSword of Power"
+      lore:
+      - '&7Powerful sword!'
+      enchantments:
+      - 'DAMAGE_ALL:5'
+      - 'DURABILITY:3'
+    1:
+      commands:
+      - 'exp give %player% 15000'
