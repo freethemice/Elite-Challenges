@@ -59,7 +59,10 @@ public class Core extends JavaPlugin {
 			}
 		}));
 
-		new ChallengeTimeUpdater().runTaskTimer(this, 20, 20);
+		FileConfiguration config = Core.instance.getConfig();
+		ChallengeTimeUpdater CTU = new ChallengeTimeUpdater();
+		CTU.counter = config.getInt("timer.challenge-duration");
+		CTU.runTaskTimer(this, 20, 20);
 		new TimeChallengesListener().runTaskTimer(this, 20, 20);
 	}
 
