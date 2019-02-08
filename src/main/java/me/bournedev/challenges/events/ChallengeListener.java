@@ -108,12 +108,14 @@ public class ChallengeListener implements Listener {
 				amountOfItems = freeSpace(player, item.getType(), amountOfItems);
 			}
 		}
-		if (cursor.getType().equals(item.getType())) {
-			if (cursor.getAmount() + item.getAmount() > cursor.getMaxStackSize()) {
+		if (cursor.getType() != Material.AIR) {
+			if (cursor.getType().equals(item.getType())) {
+				if (cursor.getAmount() + item.getAmount() > cursor.getMaxStackSize()) {
+					return;
+				}
+			} else {
 				return;
 			}
-		} else {
-			return;
 		}
 		this.updateChallenge(player, ChallengeType.CRAFT_ITEM, item.getType().name(), amountOfItems);
 	}
