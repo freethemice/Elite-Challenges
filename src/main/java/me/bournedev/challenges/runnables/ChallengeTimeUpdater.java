@@ -28,7 +28,7 @@ public class ChallengeTimeUpdater extends BukkitRunnable {
 	
 	public void resetChallenges() {
 		FileConfiguration config = Core.instance.getConfig();
-		counter = 86400;
+		counter =  config.getInt("timer.challenge-duration");
 		Util.sortRanks();
 		for (Challenge challenge : ChallengesGUI.challengesInGUI) {
 			ArrayList<String> playerNames = new ArrayList<String>();
