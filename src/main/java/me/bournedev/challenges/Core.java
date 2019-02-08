@@ -60,9 +60,8 @@ public class Core extends JavaPlugin {
 		}));
 
 		FileConfiguration config = Core.instance.getConfig();
-		ChallengeTimeUpdater CTU = new ChallengeTimeUpdater();
-		CTU.counter = config.getInt("timer.challenge-duration");
-		CTU.runTaskTimer(this, 20, 20);
+		ChallengeTimeUpdater.counter = config.getInt("timer.challenge-duration");
+		new ChallengeTimeUpdater().runTaskTimer(this, 20, 20);
 		new TimeChallengesListener().runTaskTimer(this, 20, 20);
 	}
 
@@ -133,7 +132,8 @@ public class Core extends JavaPlugin {
 								Util.timeMessage(ChallengeTimeUpdater.counter))));
 					} else if (args[0].equalsIgnoreCase("reset")) {
 						if (player.hasPermission("challenges.admin")) {
-							ChallengeTimeUpdater.counter = 86400;
+							FileConfiguration config = Core.instance.getConfig();
+							ChallengeTimeUpdater.counter = config.getInt("timer.challenge-duration");
 							ChallengesGUI.resetChallengesInGUI();
 							player.sendMessage(Util.color(getConfig().getString("messages.challenges-reset-message")));
 						}
