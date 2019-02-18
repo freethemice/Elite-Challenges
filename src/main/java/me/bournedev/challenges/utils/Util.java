@@ -1,14 +1,9 @@
 package me.bournedev.challenges.utils;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map.Entry;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
-
+import com.firesoftitan.play.titanbox.TitanBox;
+import me.bournedev.challenges.Challenge;
+import me.bournedev.challenges.Core;
+import me.bournedev.challenges.gui.ChallengesGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -18,14 +13,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import com.sk89q.worldguard.bukkit.WGBukkit;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import com.sk89q.worldguard.protection.flags.StateFlag.State;
-
-import me.bournedev.challenges.Challenge;
-import me.bournedev.challenges.Core;
-import me.bournedev.challenges.gui.ChallengesGUI;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("deprecation")
 public class Util {
@@ -145,24 +135,22 @@ public class Util {
 	}
 
 	public static boolean allowsPVP(Location loc) {
-		ApplicableRegionSet set = WGBukkit.getPlugin().getRegionManager(loc.getWorld()).getApplicableRegions(loc);
-		if (set.queryState(null, DefaultFlag.PVP) == State.DENY) {
+		return !TitanBox.instants.isInField(loc);
+	}
+
+	public static boolean allowsBreaking(Location loc, Player player) {
+		if (!TitanBox.instants.isInField(loc)) return true;
+		if (TitanBox.instants.isBlockPlayer(loc, player))
+		{
 			return false;
 		}
 		return true;
 	}
 
-	public static boolean allowsBreaking(Location loc) {
-		ApplicableRegionSet set = WGBukkit.getPlugin().getRegionManager(loc.getWorld()).getApplicableRegions(loc);
-		if (set.queryState(null, DefaultFlag.BLOCK_BREAK) == State.DENY) {
-			return false;
-		}
-		return true;
-	}
-
-	public static boolean allowsPlacing(Location loc) {
-		ApplicableRegionSet set = WGBukkit.getPlugin().getRegionManager(loc.getWorld()).getApplicableRegions(loc);
-		if (set.queryState(null, DefaultFlag.BLOCK_PLACE) == State.DENY) {
+	public static boolean allowsPlacing(Location loc, Player player) {
+		if (!TitanBox.instants.isInField(loc)) return true;
+		if (TitanBox.instants.isBlockPlayer(loc, player))
+		{
 			return false;
 		}
 		return true;

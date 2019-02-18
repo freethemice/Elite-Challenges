@@ -1,10 +1,10 @@
 package me.bournedev.challenges;
 
+import me.bournedev.challenges.utils.Util;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-
-import me.bournedev.challenges.utils.Util;
 
 public class Challenge {
 	private String challengeName;
@@ -19,7 +19,10 @@ public class Challenge {
 		this.objectiveObjectTypes = objectiveObjectTypes;
 		this.counters = counters;
 	}
-
+	public void reset()
+	{
+		this.counters.clear();
+	}
 	public String getChallengeName() {
 		return challengeName;
 	}

@@ -1,10 +1,11 @@
 package me.bournedev.challenges;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.concurrent.Callable;
-
+import me.bournedev.challenges.events.ChallengeListener;
+import me.bournedev.challenges.events.ChallengesGUIListener;
+import me.bournedev.challenges.gui.ChallengesGUI;
+import me.bournedev.challenges.runnables.ChallengeTimeUpdater;
+import me.bournedev.challenges.runnables.TimeChallengesListener;
+import me.bournedev.challenges.utils.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -13,19 +14,16 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import me.bournedev.challenges.events.ChallengeListener;
-import me.bournedev.challenges.events.ChallengesGUIListener;
-import me.bournedev.challenges.gui.ChallengesGUI;
-import me.bournedev.challenges.runnables.ChallengeTimeUpdater;
-import me.bournedev.challenges.runnables.TimeChallengesListener;
-import me.bournedev.challenges.utils.Util;
+import java.io.File;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 
 public class Core extends JavaPlugin {
 
 	public static Core instance;
 	public File data;
 	public FileConfiguration dataconfig;
-
+	public OfflineRewardsHolder rewardsHolder;
 	public void onEnable() {
 		instance = this;
 		File file = new File(getDataFolder(), "config.yml");
@@ -45,25 +43,37 @@ public class Core extends JavaPlugin {
 			Challenge.challenges.add(challenge);
 		}
 
+		FileConfiguration config = Core.instance.getConfig();
+		ChallengeTimeUpdater.counter = config.getInt("timer.challenge-duration");
+		ChallengeTimeUpdater.annuncerCounter =  config.getInt("timer.challenge-annoucer-duration");
 		registerDataFile();
 
 		// If no challenges were registered from the data file.
 		if (ChallengesGUI.challengesInGUI.size() == 0) {
 			ChallengesGUI.resetChallengesInGUI();
 		}
-		Metrics metrics = new Metrics(this);
-		metrics.addCustomChart(new Metrics.SimplePie("used_language", new Callable<String>() {
-			@Override
-			public String call() throws Exception {
-				return getConfig().getString("language", "en");
-			}
-		}));
+		rewardsHolder  = new OfflineRewardsHolder();
+		rewardsHolder.load();
+		//config.getStringList("messages.challenge-finished-broadcast")
+
 
 		new ChallengeTimeUpdater().runTaskTimer(this, 20, 20);
 		new TimeChallengesListener().runTaskTimer(this, 20, 20);
 	}
-
+	public void clearSavedData()
+	{
+		try {
+			dataconfig.set("timer.time", null);
+			dataconfig.set("challengesActive", null);
+			dataconfig.set("playerData", null);
+			saveYML(dataconfig, data);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	public void onDisable() {
+		rewardsHolder.save();
+
 		dataconfig.set("timer.time", Integer.toString(ChallengeTimeUpdater.counter));
 		dataconfig.createSection("challengesActive");
 		dataconfig.createSection("playerData");
@@ -90,9 +100,10 @@ public class Core extends JavaPlugin {
 				for (String string : dataconfig.getConfigurationSection("challengesActive").getKeys(false)) {
 					Challenge challenge = Challenge.getChallengeByName(string);
 					LinkedHashMap<String, Integer> counters = new LinkedHashMap<String, Integer>();
-					for (String playerName : dataconfig.getConfigurationSection("playerData." + string)
-							.getKeys(false)) {
-						counters.put(playerName, dataconfig.getInt("playerData." + string + "." + playerName));
+					if (dataconfig.contains("playerData." + string)) {
+						for (String playerName : dataconfig.getConfigurationSection("playerData." + string).getKeys(false)) {
+							counters.put(playerName, dataconfig.getInt("playerData." + string + "." + playerName));
+						}
 					}
 					challenge.setCounters(counters);
 					ChallengesGUI.challengesInGUI.add(challenge);
@@ -130,9 +141,20 @@ public class Core extends JavaPlugin {
 								Util.timeMessage(ChallengeTimeUpdater.counter))));
 					} else if (args[0].equalsIgnoreCase("reset")) {
 						if (player.hasPermission("challenges.admin")) {
-							ChallengeTimeUpdater.counter = 86400;
+							FileConfiguration config = Core.instance.getConfig();
+							ChallengeTimeUpdater.counter = config.getInt("timer.challenge-duration");
+							ChallengeTimeUpdater.annuncerCounter =  config.getInt("timer.challenge-annoucer-duration");
 							ChallengesGUI.resetChallengesInGUI();
 							player.sendMessage(Util.color(getConfig().getString("messages.challenges-reset-message")));
+						}
+
+					} else if (args[0].equalsIgnoreCase("win")) {
+						if (player.hasPermission("challenges.admin")) {
+							ChallengeTimeUpdater.counter = 5;
+						}
+					} else if (args[0].equalsIgnoreCase("annouce") || args[0].equalsIgnoreCase("say")) {
+						if (player.hasPermission("challenges.admin")) {
+							ChallengeTimeUpdater.annuncerCounter = 3;
 						}
 					}
 				}

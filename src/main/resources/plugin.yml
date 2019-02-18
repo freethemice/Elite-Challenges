@@ -1,6 +1,7 @@
 name: EliteChallenges
-authors: [BourneDev, Splodgebox]
+authors: [BourneDev, Splodgebox, freethemice]
 version: 1.0
+depend: [TitanBox]
 main: me.bournedev.challenges.Core
 commands:
    challenges:

@@ -1,3 +1,5 @@
+timer.challenge-duration: 86400 #in seconds
+timer.challenge-annoucer-duration: 3000 #in seconds
 messages:
   time-message: "&a&lThere is &c&l%time% &a&luntil this challenge ends!"
   challenges-reset-message: "&a&lThe challenges have been reset, there are now new challenges!"

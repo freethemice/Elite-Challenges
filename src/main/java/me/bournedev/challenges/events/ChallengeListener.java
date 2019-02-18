@@ -1,7 +1,11 @@
 package me.bournedev.challenges.events;
 
-import java.util.ArrayList;
-
+import me.bournedev.challenges.Challenge;
+import me.bournedev.challenges.ChallengeType;
+import me.bournedev.challenges.Core;
+import me.bournedev.challenges.gui.ChallengesGUI;
+import me.bournedev.challenges.utils.Util;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -21,21 +25,33 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import me.bournedev.challenges.Challenge;
-import me.bournedev.challenges.ChallengeType;
-import me.bournedev.challenges.gui.ChallengesGUI;
-import me.bournedev.challenges.utils.Util;
+import java.util.ArrayList;
 
 public class ChallengeListener implements Listener {
 
+	@EventHandler
+	public void onPlayerLogin(PlayerLoginEvent event)
+	{
+		new BukkitRunnable()
+		{
+
+			@Override
+			public void run() {
+				Core.instance.rewardsHolder.checkforPlayer(event.getPlayer());
+			}
+		}.runTaskLater(Core.instance, 20);
+
+	}
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
 		Block block = event.getBlock();
 		Player player = event.getPlayer();
 		Location loc = player.getLocation();
-		if (Util.allowsBreaking(loc)) {
+		if (Util.allowsBreaking(loc, player)) {
 			this.updateChallenge(player, ChallengeType.BLOCK_BREAK, block.getType().name(), 1);
 		}
 	}
@@ -45,7 +61,7 @@ public class ChallengeListener implements Listener {
 		Block block = event.getBlock();
 		Player player = event.getPlayer();
 		Location loc = player.getLocation();
-		if (Util.allowsPlacing(loc)) {
+		if (Util.allowsPlacing(loc, player)) {
 			this.updateChallenge(player, ChallengeType.BLOCK_PLACE, block.getType().name(), 1);
 		}
 	}
@@ -88,9 +104,11 @@ public class ChallengeListener implements Listener {
 	public void onFish(PlayerFishEvent event) {
 		Player player = event.getPlayer();
 		Entity entity = event.getCaught();
-		if (entity.getType().equals(EntityType.DROPPED_ITEM)) {
-			ItemStack item = ((Item) entity).getItemStack();
-			this.updateChallenge(player, ChallengeType.FISHING, item.getType().name(), 1);
+		if (entity != null) {
+			if (entity.getType().equals(EntityType.DROPPED_ITEM)) {
+				ItemStack item = ((Item) entity).getItemStack();
+				this.updateChallenge(player, ChallengeType.FISHING, item.getType().name(), 1);
+			}
 		}
 	}
 
@@ -108,12 +126,14 @@ public class ChallengeListener implements Listener {
 				amountOfItems = freeSpace(player, item.getType(), amountOfItems);
 			}
 		}
-		if (cursor.getType().equals(item.getType())) {
-			if (cursor.getAmount() + item.getAmount() > cursor.getMaxStackSize()) {
+		if (cursor.getType() != Material.AIR) {
+			if (cursor.getType().equals(item.getType())) {
+				if (cursor.getAmount() + item.getAmount() > cursor.getMaxStackSize()) {
+					return;
+				}
+			} else {
 				return;
 			}
-		} else {
-			return;
 		}
 		this.updateChallenge(player, ChallengeType.CRAFT_ITEM, item.getType().name(), amountOfItems);
 	}
@@ -162,6 +182,7 @@ public class ChallengeListener implements Listener {
 	}
 
 	public void updateChallenge(Player player, ChallengeType challengeType, String objectType, int additionToCounter) {
+		if (player.getGameMode() != GameMode.SURVIVAL) return;
 		if (Util.isInEnabledWorld(player)) {
 			for (Challenge challenge : ChallengesGUI.challengesInGUI) {
 				if (challenge.getChallengeType().equals(challengeType)) {

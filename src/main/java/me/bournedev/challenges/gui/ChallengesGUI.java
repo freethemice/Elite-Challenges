@@ -1,8 +1,9 @@
 package me.bournedev.challenges.gui;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import me.bournedev.challenges.Challenge;
+import me.bournedev.challenges.Core;
+import me.bournedev.challenges.runnables.ChallengeTimeUpdater;
+import me.bournedev.challenges.utils.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -10,14 +11,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Faction;
-
-import me.bournedev.challenges.Challenge;
-import me.bournedev.challenges.Core;
-import me.bournedev.challenges.runnables.ChallengeTimeUpdater;
-import me.bournedev.challenges.utils.Util;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class ChallengesGUI {
 	public static ArrayList<Challenge> challengesInGUI = new ArrayList<Challenge>();
@@ -45,15 +41,12 @@ public class ChallengesGUI {
 				int i = 1;
 				for (String playerName : challenge.getCounters().keySet()) {
 					string = string.replace("%player" + Integer.toString(i) + "%", playerName).replace("%counter" + Integer.toString(i) + "%", Integer.toString(challenge.getCounters().get(playerName)));
-					if (Util.hasFactions()) {
-						FPlayer fplayer = FPlayers.getInstance().getByOfflinePlayer(Bukkit.getOfflinePlayer(playerName));
-						Faction faction = fplayer.getFaction();
-						string = string.replace("%faction" + Integer.toString(i) + "%", faction.getTag());
-					}
 					i++;
 				}
 				string = string.replace("null", "None");
-				newList.add(string);
+				if (!string.contains("%player")) {
+					newList.add(string);
+				}
 			}
 			ItemStack icon = createIcon(iconPath, newList);
 			challengesGUI.setItem(slot, icon);
@@ -63,10 +56,15 @@ public class ChallengesGUI {
 	}
 	
 	public static void resetChallengesInGUI() {
+
+		Core.instance.clearSavedData();
 		challengesInGUI.clear();
+		HashMap<String, Challenge> tmp = new HashMap<String, Challenge>();
 		for (Challenge challenge : Challenge.getRandomChallenges(5)) {
-			challengesInGUI.add(challenge);
+			challenge.reset();
+			tmp.put(challenge.getChallengeName(), challenge);
 		}
+		challengesInGUI = new ArrayList<Challenge>(tmp.values());
 	}
 	
 	public ItemStack createIcon(String iconPath, List<String> list) {
